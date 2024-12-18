@@ -3,11 +3,11 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{float}  % Added for better figure placement
-\usepackage{url}    % Added for URL support
-\usepackage{xcolor} % Added for colored links
+\usepackage{float}
+\usepackage{url}
+\usepackage{xcolor}
 
-% Hyperref setup for better-looking links
+% for links
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -38,15 +38,14 @@ Fall 2024\\
 \begin{abstract}
 We address the challenge of predicting heart disease risk using data from the
 Behavioral Risk Factor Surveillance System (BRFSS). We implement and enhance
-logistic regression to handle significant class imbalance and complex feature interactions.
+logistic regression to handle significant class imbalance and the existing feature interactions.
 Our initial implementation revealed critical challenges in handling imbalanced medical data,
 which we successfully addressed through class weighting and feature engineering,
-achieving a balanced accuracy of 0.717. This paper details our methodology,
+achieving a balanced accuracy of 0.717. This report details our methodology,
 the challenges encountered, and our solutions in developing a robust prediction model.
 \end{abstract}
 
 \section{Introduction}
-
 Heart disease remains one of the leading causes of death globally, making early risk
 prediction crucial for preventive healthcare. This project aims to develop a
 machine learning model to predict an individual's risk of heart disease based on
@@ -57,8 +56,6 @@ feature interactions.
 Our key contributions include:
 \begin{itemize}
     \item Implementation of logistic regression with specific enhancements for medical data
-    \item Development of a robust preprocessing pipeline for handling missing values and
-    feature scaling
     \item Analysis of the impact of class imbalance on model performance and its mitigation
     \item Open-source implementation and documentation for reproducibility
 \end{itemize}
@@ -66,16 +63,15 @@ Our key contributions include:
 \section{Models and Methods}
 
 \subsection{Initial Approach and Challenges}
-Our first implementation using standard logistic regression revealed a critical
-issue in medical data classification - the model predicted the majority class (no heart disease)
-for all samples. This highlighted the necessity for a more sophisticated approach to handle
+Our first implementation using standard logistic regression revealed an issue in medical data
+classification - the model predicted the majority class (no heart disease) for all samples.
+This highlighted the necessity for a more sophisticated approach to handle
 class imbalance.
 
 The base logistic regression model follows the form:
 \begin{equation}
     P(y=1|x) = \frac{1}{1 + e^{-w^Tx}}
 \end{equation}
-
 where $w$ represents the model parameters and $x$ the input features.
 
 \subsection{Enhanced Implementation}
@@ -93,12 +89,19 @@ We introduced class-specific weights:
 \begin{equation}
     w_{class} = \frac{n_{samples}}{2 * n_{class}}
 \end{equation}
+where $n_{samples}$ is the total number of samples in the dataset,
+and $n_{class}$ is the number of samples in each specific class
+(heart disease or no heart disease). This weighting scheme assigns higher
+importance to the minority class during training.
 
 \subsubsection{Training Optimization}
 Implemented adaptive learning rate:
 \begin{equation}
     \gamma_t = \frac{\gamma}{\sqrt{t + 1}}
 \end{equation}
+where $\gamma_t$ is the learning rate at iteration $t$, and $\gamma$ is the
+initial learning rate. This adaptive scheme gradually reduces the learning rate as
+training progresses, which helps prevent oscillations in later stages of training.
 
 \section{Results}
 
@@ -138,7 +141,6 @@ model training scripts, and evaluation metrics, is available in our public repos
     \item Requirements file for environment reproduction
 \end{itemize}
 
-
 \section{Discussion}
 
 The evolution from our initial implementation to the final model reveals several key
@@ -176,15 +178,13 @@ including potential thesis work focusing on the theoretical aspects of AI system
 
 The progression from a basic logistic regression implementation to handling real-world
 challenges in this project has provided valuable insights into both practical
-and theoretical aspects of machine learning. These insights will be valuable for
-my intended research in model compositionality and theoretical AI.
+and theoretical aspects of machine learning.
 
 \section{Summary}
 
 We successfully developed a heart disease prediction model that overcomes the challenges of
-imbalanced medical data. The progression from a naive implementation to a sophisticated solution
-demonstrates the importance of careful consideration of data characteristics in medical
-applications. Our approach provides a foundation for future work in medical risk
-prediction using machine learning.
+imbalanced medical data. The progression from a naive implementation to a more sophisticated
+solution demonstrates the importance of careful consideration of data characteristics in
+medical applications.
 
 \end{document}
